@@ -95,7 +95,8 @@ public class BlogResource {
     @Timed
     public List<Blog> getAllBlogs() {
         log.debug("REST request to get all Blogs");
-        return blogRepository.findAll();
+        List<Blog> blogs = blogRepository.findByUserIsCurrentUser();
+        return blogs;
         }
 
     /**

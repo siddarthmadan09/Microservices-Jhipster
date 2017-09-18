@@ -5,6 +5,7 @@ import org.jhipster.blog.domain.Entry;
 
 import org.jhipster.blog.repository.EntryRepository;
 import org.jhipster.blog.repository.search.EntrySearchRepository;
+import org.jhipster.blog.security.SecurityUtils;
 import org.jhipster.blog.web.rest.util.HeaderUtil;
 import org.jhipster.blog.web.rest.util.PaginationUtil;
 import io.swagger.annotations.ApiParam;
@@ -102,7 +103,7 @@ public class EntryResource {
     @Timed
     public ResponseEntity<List<Entry>> getAllEntries(@ApiParam Pageable pageable) {
         log.debug("REST request to get a page of Entries");
-        Page<Entry> page = entryRepository.findAll(pageable);
+        Page<Entry> page = entryRepository.findByBlogUserLoginOrderByDateDesc(SecurityUtils.getCurrentUserLogin(), pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/entries");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
